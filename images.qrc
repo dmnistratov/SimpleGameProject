@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/land_1.png</file>
+        <file>images/land_empty.png</file>
+        <file>images/border.png</file>
+        <file>images/exit.png</file>
+        <file>images/start.png</file>
+        <file>images/player_earth.png</file>
+        <file>images/player_elec.png</file>
+        <file>images/player_ice.png</file>
+        <file>images/Tavern.png</file>
+        <file>images/teleport.png</file>
+        <file>images/key.png</file>
+        <file>images/enemy_ice.png</file>
+        <file>images/enemy_earth.png</file>
+        <file>images/enemy_fire.png</file>
+    </qresource>
+</RCC>
