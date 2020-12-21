@@ -19,6 +19,8 @@ public:
 
     virtual int getX() const;
     virtual int getY() const;
+    virtual void setStat(int n);
+    virtual std::string saveBonus() const;
 };
 
 class key: public IBonus
@@ -36,6 +38,8 @@ public:
      int getX() const;
      int getY() const;
 
+     void setStat(int n);
+     std::string saveBonus() const;
 private:
      QPixmap* keyI;
      int x, y, scale;
@@ -57,6 +61,8 @@ public:
      int getX() const;
      int getY() const;
 
+     void setStat(int n);
+     std::string saveBonus() const;
 private:
      QPixmap* tpI;
      int x, y, sx, sy, scale;
@@ -79,6 +85,8 @@ public:
     int getX() const;
     int getY() const;
 
+    void setStat(int n);
+    std::string saveBonus() const;
 private:
      QPixmap* rainbowI;
      int x, y, scale;

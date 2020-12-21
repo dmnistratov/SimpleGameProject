@@ -3,9 +3,11 @@
 
 #include <QGraphicsRectItem>
 #include <QPainter>
+#include <sstream>
 #include "bonus.h"
 #include "playerlogger.h"
 #include "file.h"
+
 template <typename T>
 class Enemy;
 class Fire;
@@ -40,10 +42,13 @@ public:
     void setScale(int n);
     void setKeys(int n);
     void setType(playerType type);
+    void setType(int type);
     void setHP(int n);
 
     bool isDead() const;
 
+    std::string savePlayer();
+    void loadPlayer(std::string playerstr);
     PlayerLogger *playerlog;
 private:
     static Player *instance_p;

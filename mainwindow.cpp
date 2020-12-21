@@ -28,8 +28,8 @@ void MainWindow::start()
     enemyE = new Enemy<Earth>();
     gamefield = GameField::GetInstance();
     timer = new QTimer(this);
-    size_t m = 20;
-    size_t n = 20;
+    size_t m = 10;
+    size_t n = 10;
     gamefield->setSize(n,m);
     gamefield->createField();
     GameFieldIterator st_test = gamefield->begin();
@@ -67,7 +67,6 @@ void MainWindow::start()
     player->setType(Player::ice);
     connect(timer, SIGNAL(timeout()), this, SLOT(updater()));
     timer->start(60);
-
     this->setFocus();
 }
 
@@ -196,6 +195,70 @@ void MainWindow::updater()
 void MainWindow::on_start_clicked()
 {
     start();
+}
+
+void MainWindow::on_save_clicked()
+{
+    if (ended) return ;
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save File as"), "",
+            tr("Save File (*.txt)"));
+    try {
+        saveload = new SaveLoad(fileName.toStdString());
+    }  catch (std::runtime_error &e) {
+        QMessageBox::warning(0, QString(" "), QString(e.what()), QMessageBox::Ok);
+        return;
+    }
+    saveload->save(gamefield->saveMap());
+    saveload->save(enemyF->saveEnemy());
+    saveload->save(enemyI->saveEnemy());
+    saveload->save(enemyE->saveEnemy());
+    saveload->save(player->savePlayer());
+}
+
+void MainWindow::on_load_clicked()
+{
+    std::cout << "load" << std::endl;
+    QString fileName = QFileDialog::getOpenFileName(this,
+           tr("Open Load File"), "",
+           tr("Load File (*.txt)"));
+    try {
+        saveload = new SaveLoad(fileName.toStdString());
+    }  catch (std::runtime_error &e) {
+        QMessageBox::warning(0, QString(" "), QString(e.what()), QMessageBox::Ok);
+        return;
+    }
+    if (ended)
+    {
+        start();
+    }
+    std::ofstream tempsv("temp.txt");
+    std::string pull;
+    SaveLoad* tempsl = new SaveLoad("temp.txt");
+    tempsl->save(gamefield->saveMap());
+    tempsl->save(enemyF->saveEnemy());
+    tempsl->save(enemyI->saveEnemy());
+    tempsl->save(enemyE->saveEnemy());
+    tempsl->save(player->savePlayer());
+    try {
+        gamefield->createMap(pull = saveload->loadline());
+        gamefield->loadKey(pull = saveload->loadline());
+        gamefield->loadTp(pull = saveload->loadline());
+        gamefield->loadRainb(pull = saveload->loadline());
+        enemyF->loadEnemy(pull = saveload->loadline());
+        enemyI->loadEnemy(pull = saveload->loadline());
+        enemyE->loadEnemy(pull = saveload->loadline());
+        player->loadPlayer(pull = saveload->loadline());
+    }  catch (...) {
+        QMessageBox::warning(0, QString(" "), QString("File load error!"), QMessageBox::Ok);
+        try {
+            saveload = new SaveLoad("temp.txt");
+        }  catch (std::runtime_error &e) {
+            QMessageBox::warning(0, QString(" "), QString(e.what()), QMessageBox::Ok);
+            return;
+        }
+    }
+    std::cout << saveload->loadline() << std::endl;
 }
 
 

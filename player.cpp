@@ -181,6 +181,23 @@ void Player::setType(Player::playerType type)
     plType = type;
 }
 
+void Player::setType(int type)
+{
+    switch (type) {
+    case 0:
+        this->setType(elec);
+        break;
+    case 1:
+        this->setType(earth);
+        break;
+    case 2:
+        this->setType(ice);
+        break;
+    default:
+        throw "Save file corrupted";
+    }
+}
+
 void Player::setHP(int n)
 {
     hp = n;
@@ -191,6 +208,47 @@ bool Player::isDead() const
     if (hp < 1)
         return true;
     return false;
+}
+
+std::string Player::savePlayer()
+{
+    std::string tempstr;
+    tempstr.append(std::to_string(x));
+    tempstr.append(" ");
+    tempstr.append(std::to_string(y));
+    tempstr.append(" ");
+    tempstr.append(std::to_string(scale));
+    tempstr.append(" ");
+    tempstr.append(std::to_string(keycollected));
+    tempstr.append(" ");
+    tempstr.append(std::to_string(hp));
+    tempstr.append(" ");
+    tempstr.append(std::to_string(plType));
+    tempstr.append(" ");
+    return tempstr;
+}
+
+void Player::loadPlayer(std::string playerstr)
+{
+    std::stringstream ss;
+    ss << playerstr;
+    int val;
+    ss >> val;
+    if (val > 10) //#Fix
+        throw "X error";
+    x = val;
+    ss >> val;
+    if (val > 10) //#Fix
+        throw "X error";
+    y = val;
+    ss >> val;
+    scale = val;
+    ss >> val;
+    keycollected = val;
+    ss >> val;
+    hp = val;
+    ss >> val;
+    setType(val);
 }
 
 QPixmap *Player::getPixmapType()

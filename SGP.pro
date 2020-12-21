@@ -17,7 +17,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
-    playerlogger.cpp
+    playerlogger.cpp \
+    saveload.cpp
 
 HEADERS += \
     bonus.h \
@@ -29,7 +30,8 @@ HEADERS += \
     gamefielditerator.h \
     mainwindow.h \
     player.h \
-    playerlogger.h
+    playerlogger.h \
+    saveload.h
 
 FORMS += \
     mainwindow.ui

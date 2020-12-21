@@ -4,9 +4,11 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QFileDialog>
 #include <QMessageBox>
 #include "player.h"
 #include "enemy.h"
+#include "saveload.h"
 #include "bonus.h"
 #include "gamefield.h"
 
@@ -44,11 +46,14 @@ private:
     Enemy<Ice> *enemyI;
     Enemy<Earth> *enemyE;
     GameField* gamefield;
+    SaveLoad* saveload;
     bool ended;
 
 public slots:
     void updater();
     void on_start_clicked();
+    void on_save_clicked();
+    void on_load_clicked();
 
 protected:
     void keyPressEvent(QKeyEvent *event);

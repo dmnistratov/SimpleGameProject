@@ -29,6 +29,16 @@ int IBonus::getY() const
     return 0;
 }
 
+void IBonus::setStat(int n)
+{
+    Q_UNUSED(n);
+}
+
+std::string IBonus::saveBonus() const
+{
+    return NULL;
+}
+
 key::key()
 {
     keyI = new QPixmap(":/images/key.png");
@@ -78,6 +88,25 @@ int key::getY() const
     return y;
 }
 
+void key::setStat(int n)
+{
+    collected = n;
+}
+
+std::string key::saveBonus() const
+{
+    std::string temp;
+    temp.append(std::to_string(x));
+    temp.append(" ");
+    temp.append(std::to_string(y));
+    temp.append(" ");
+    temp.append(std::to_string(scale));
+    temp.append(" ");
+    temp.append(std::to_string(collected));
+    temp.append(" \n");
+    return temp;
+}
+
 tp_to_spawn::tp_to_spawn()
 {
     tpI = new QPixmap(":/images/teleport.png");
@@ -123,6 +152,23 @@ int tp_to_spawn::getX() const
 int tp_to_spawn::getY() const
 {
     return y;
+}
+
+void tp_to_spawn::setStat(int n)
+{
+        Q_UNUSED(n);
+}
+
+std::string tp_to_spawn::saveBonus() const
+{
+    std::string temp;
+    temp.append(std::to_string(x));
+    temp.append(" ");
+    temp.append(std::to_string(y));
+    temp.append(" ");
+    temp.append(std::to_string(scale));
+    temp.append(" \n");
+    return temp;
 }
 
 void tp_to_spawn::setSpawnLoc()
@@ -194,6 +240,23 @@ int rainbow::getX() const
 int rainbow::getY() const
 {
     return y;
+}
+
+void rainbow::setStat(int n)
+{
+        Q_UNUSED(n);
+}
+
+std::string rainbow::saveBonus() const
+{
+    std::string temp;
+    temp.append(std::to_string(x));
+    temp.append(" ");
+    temp.append(std::to_string(y));
+    temp.append(" ");
+    temp.append(std::to_string(scale));
+    temp.append(" ");
+    return temp;
 }
 
 IBonusFactory::IBonusFactory() {}

@@ -8,6 +8,7 @@
 #include "bonus.h"
 #include "fieldlogger.h"
 #include "file.h"
+#include <sstream>
 
 static const size_t MAP_RESOLUTION = 800;
 
@@ -24,9 +25,14 @@ public:
     class GameFieldIterator end();
     void PrintXY();
     void generateMap();
+    void createMap(std::string mapstr);
+    void loadKey(std::string keystr);
+    void loadTp(std::string tpstr);
+    void loadRainb(std::string rainbstr);
     bool isCollide(int x, int y);
     bool isExit(int x, int y);
     IBonus* pickup(int x, int y);
+    std::string saveMap();
 
     IBonus *keyb, *tpb, *rainb;
     FieldLogger *fieldlog;

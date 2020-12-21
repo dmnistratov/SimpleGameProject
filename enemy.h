@@ -56,6 +56,35 @@ public:
         *API + player;
     }
 
+    std::string saveEnemy()
+    {
+        std::string tempstr;
+        tempstr.append(std::to_string(x));
+        tempstr.append(" ");
+        tempstr.append(std::to_string(y));
+        tempstr.append(" ");
+        tempstr.append(std::to_string(scale));
+        tempstr.append(" ");
+        return tempstr;
+    }
+
+    void loadEnemy(std::string enemystr)
+    {
+        std::stringstream ss;
+        ss << enemystr;
+        int val;
+        ss >> val;
+        if (val > 10) //#Fix
+            throw "X error";
+        x = val;
+        ss >> val;
+        if (val > 10) //#Fix
+            throw "X error";
+        y = val;
+        ss >> val;
+        scale = val;
+    }
+
     action getState() const
     {
         return API->setState();

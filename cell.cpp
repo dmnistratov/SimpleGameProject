@@ -50,6 +50,29 @@ void Cell::setType(Cell::celltype n)
     type = n;
 }
 
+void Cell::setType(int n)
+{
+    switch (n) {
+    case -2:
+        type = celltype::border;
+        break;
+    case -1:
+        type = celltype::filled;
+        break;
+    case 0:
+        type = celltype::empty;
+        break;
+    case 1:
+        type = celltype::entry;
+        break;
+    case 2:
+        type = celltype::exit;
+        break;
+    default:
+        throw "Save file corrupted";
+    }
+}
+
 void Cell::setScale(int n)
 {
     scale = n;

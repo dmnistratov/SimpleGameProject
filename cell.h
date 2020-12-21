@@ -21,6 +21,7 @@ public:
     void setX(int n);
     void setY(int n);
     void setType(celltype n);
+    void setType(int n);
     void setScale(int n);
 
 private:

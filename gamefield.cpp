@@ -60,6 +60,10 @@ Cell*** GameField::createField()
             field[i][j]->setRect((MAP_RESOLUTION/m_width)*j, (MAP_RESOLUTION/m_height)*i, (MAP_RESOLUTION/m_width), (MAP_RESOLUTION/m_height));
         }
     }
+    bonuses = new BonusFactory();
+    keyb = bonuses->CreateBonus(BonusType::key_b);
+    tpb = bonuses->CreateBonus(BonusType::tp_b);
+    rainb = bonuses->CreateBonus(BonusType::rainbow_b);
     return field;
 }
 
@@ -97,7 +101,6 @@ void GameField::PrintXY()
 void GameField::generateMap()
 {
         *fieldlog << "start of generation";
-    bonuses = new BonusFactory();
     GameField* grid = GameField::GetInstance();
     keyb = bonuses->CreateBonus(BonusType::key_b);
     bool border = false, exit_set = false, entry_set = false, key_set = false, tp_set = false, rainbow_set = false;
@@ -129,7 +132,6 @@ void GameField::generateMap()
                 || ((*temp)->getX() == (int)m_width-4 && (*temp)->getY() == (int)m_height-4 && !key_set))
         {
                 *fieldlog << "bonus key set";
-            keyb = bonuses->CreateBonus(BonusType::key_b);
             keyb->place((*temp)->getX(), (*temp)->getY());
             keyb->setScale((MAP_RESOLUTION/m_width));
             key_set = true;
@@ -138,7 +140,6 @@ void GameField::generateMap()
                 || ((*temp)->getX() == (int)m_width-7 && (*temp)->getY() == (int)m_height-2 && !tp_set))
         {
                 *fieldlog << "bonus teleport set";
-            tpb = bonuses->CreateBonus(BonusType::tp_b);
             tpb->place((*temp)->getX(), (*temp)->getY());
             tpb->setScale((MAP_RESOLUTION/m_width));
             tp_set = true;
@@ -147,13 +148,80 @@ void GameField::generateMap()
                 || ((*temp)->getX() == (int)m_width-3 && (*temp)->getY() == (int)m_height-2 && !rainbow_set))
         {
                 *fieldlog << "bonus rainbow set";
-            rainb = bonuses->CreateBonus(BonusType::rainbow_b);
             rainb->place((*temp)->getX(), (*temp)->getY());
             rainb->setScale((MAP_RESOLUTION/m_width));
             rainbow_set = true;
         }
     }
 }
+
+void GameField::createMap(std::string mapstr)
+{
+    std::cout << mapstr << std::endl;
+    std::stringstream ss;
+    ss << mapstr;
+    int val;
+    GameField* grid = GameField::GetInstance();
+    for (GameFieldIterator temp = grid->begin(); temp != grid->end(); ++temp)
+    {
+        ss >> val;
+        (*temp)->setType(val);
+    }
+}
+
+void GameField::loadKey(std::string keystr)
+{
+    std::stringstream ss;
+    ss << keystr;
+    int x, y;
+    int val;
+    ss >> x;
+    if (x > (int)m_width)
+        throw "X error";
+    ss >> y;
+    if (y > (int)m_height)
+        throw "Y error";
+    keyb->place(x, y);
+    ss >> val;
+    keyb->setScale(val);
+    ss >> val;
+    keyb->setStat(val);
+}
+
+void GameField::loadTp(std::string tpstr)
+{
+    std::stringstream ss;
+    ss << tpstr;
+    int x, y;
+    int val;
+    ss >> x;
+    if (x > (int)m_width)
+        throw "X error";
+    ss >> y;
+    if (y > (int)m_height)
+        throw "Y error";
+    tpb->place(x, y);
+    ss >> val;
+    tpb->setScale(val);
+}
+
+void GameField::loadRainb(std::string rainbstr)
+{
+    std::stringstream ss;
+    ss << rainbstr;
+    int x, y;
+    int val;
+    ss >> x;
+    if (x > (int)m_width)
+        throw "X error";
+    ss >> y;
+    if (y > (int)m_height)
+        throw "Y error";
+    rainb->place(x, y);
+    ss >> val;
+    rainb->setScale(val);
+}
+
 
 bool GameField::isCollide(int x, int y)
 {
@@ -180,4 +248,20 @@ IBonus* GameField::pickup(int x, int y)
     else if (tpb->getX() == x && tpb->getY() == y)
         return tpb;
     return nullptr;
+}
+
+std::string GameField::saveMap()
+{
+    std::string mapstring;
+    GameField* grid = GameField::GetInstance();
+    for (GameFieldIterator temp = grid->begin(); temp != grid->end(); ++temp)
+    {
+        mapstring.append(std::to_string((*temp)->getType()));
+        mapstring.append(" ");
+    }
+    mapstring.append("\n");
+    mapstring.append(keyb->saveBonus());
+    mapstring.append(tpb->saveBonus());
+    mapstring.append(rainb->saveBonus());
+    return mapstring;
 }
