@@ -74,12 +74,12 @@ public:
         ss << enemystr;
         int val;
         ss >> val;
-        if (val > 10) //#Fix
-            throw "X error";
+        if (val > 10)
+            throw std::invalid_argument("X error");
         x = val;
         ss >> val;
-        if (val > 10) //#Fix
-            throw "X error";
+        if (val > 10)
+            throw std::invalid_argument("X error");
         y = val;
         ss >> val;
         scale = val;

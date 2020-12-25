@@ -36,7 +36,7 @@ void GameField::setSize(size_t w, size_t h)
 {
         *fieldlog << "new size grid";
     if (w <= 0 || h <= 0 || w  > MAP_RESOLUTION || h > MAP_RESOLUTION)
-        throw "arguments error, size shoud be > 0 and < MAP_RESOLUTION";
+        throw std::invalid_argument("Size <= 0 or > MAP_RESOLUTION");
 
     m_width = w;
     m_height = h;
@@ -47,7 +47,7 @@ Cell*** GameField::createField()
 {
         *fieldlog << "field filled with rect";
     if (m_width == 0 || m_height == 0)
-        throw "field creation error, field already exists or arg == 0";
+        throw std::invalid_argument("field creation error, field already exists or arg == 0");
 
     field = new Cell**[m_height];
     for (size_t i = 0; i < m_height; i++){
@@ -157,7 +157,6 @@ void GameField::generateMap()
 
 void GameField::createMap(std::string mapstr)
 {
-    std::cout << mapstr << std::endl;
     std::stringstream ss;
     ss << mapstr;
     int val;
@@ -165,6 +164,8 @@ void GameField::createMap(std::string mapstr)
     for (GameFieldIterator temp = grid->begin(); temp != grid->end(); ++temp)
     {
         ss >> val;
+        if (val < -2 || val > 2)
+            throw std::invalid_argument("map currupted");
         (*temp)->setType(val);
     }
 }
@@ -176,11 +177,11 @@ void GameField::loadKey(std::string keystr)
     int x, y;
     int val;
     ss >> x;
-    if (x > (int)m_width)
-        throw "X error";
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
     ss >> y;
-    if (y > (int)m_height)
-        throw "Y error";
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     keyb->place(x, y);
     ss >> val;
     keyb->setScale(val);
@@ -195,11 +196,11 @@ void GameField::loadTp(std::string tpstr)
     int x, y;
     int val;
     ss >> x;
-    if (x > (int)m_width)
-        throw "X error";
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
     ss >> y;
-    if (y > (int)m_height)
-        throw "Y error";
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     tpb->place(x, y);
     ss >> val;
     tpb->setScale(val);
@@ -212,11 +213,11 @@ void GameField::loadRainb(std::string rainbstr)
     int x, y;
     int val;
     ss >> x;
-    if (x > (int)m_width)
-        throw "X error";
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
     ss >> y;
-    if (y > (int)m_height)
-        throw "Y error";
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     rainb->place(x, y);
     ss >> val;
     rainb->setScale(val);
@@ -225,6 +226,10 @@ void GameField::loadRainb(std::string rainbstr)
 
 bool GameField::isCollide(int x, int y)
 {
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     if (field[y][x]->getType() == Cell::empty || field[y][x]->getType() == Cell::border)
         return true;
     return false;
@@ -232,6 +237,10 @@ bool GameField::isCollide(int x, int y)
 
 bool GameField::isExit(int x, int y)
 {
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     if (field[y][x]->getType() == Cell::exit)
         return true;
     return false;
@@ -239,6 +248,10 @@ bool GameField::isExit(int x, int y)
 
 IBonus* GameField::pickup(int x, int y)
 {
+    if (x > (int)m_width || x < 0)
+        throw std::invalid_argument("X error");
+    if (y > (int)m_height || y < 0)
+        throw std::invalid_argument("Y error");
     if (keyb->getX() == x && keyb->getY() == y)
     {
         return keyb;

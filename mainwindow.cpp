@@ -159,9 +159,6 @@ void MainWindow::enemyMove(L enemy)
 
     if (player->getX() == enemy->getX() && player->getY() == enemy->getY())
     {
-        /*timer->stop();
-        end();
-        QMessageBox::information(0, QString("Information"), QString("Game Ended\nYou Died!"), QMessageBox::Ok);*/
         *enemy + player;
         *player + enemy;
         std::cout << player->getHP() << std::endl;

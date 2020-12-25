@@ -285,6 +285,8 @@ IBonus *BonusFactory::CreateBonus(BonusType type)
     case tp_b:
         return new tp_to_spawn();
         break;
+    default:
+        throw std::invalid_argument("unknown bonustype");
     }
     return nullptr;
 }

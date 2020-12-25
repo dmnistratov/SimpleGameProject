@@ -17,8 +17,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
-    playerlogger.cpp \
-    saveload.cpp
+    playerlogger.cpp
 
 HEADERS += \
     bonus.h \

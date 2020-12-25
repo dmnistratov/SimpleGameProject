@@ -69,7 +69,7 @@ void Cell::setType(int n)
         type = celltype::exit;
         break;
     default:
-        throw "Save file corrupted";
+        throw std::invalid_argument("Save file corrupted");
     }
 }
 
